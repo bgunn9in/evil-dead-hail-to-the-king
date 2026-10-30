@@ -1,0 +1,82 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1293,6 +1293,11 @@
+   "${SDL3_SOURCE_DIR}/src/video/yuv2rgb/*.h"
+ )
+ 
++# Local shared SDK: omit disabled backend sources instead of compiling empty translation units.
++get_target_property(_local_sdl_sources SDL3-shared SOURCES)
++list(FILTER _local_sdl_sources EXCLUDE REGEX "/src/render/direct3d12/")
++set_property(TARGET SDL3-shared PROPERTY SOURCES "${_local_sdl_sources}")
++
+ file(GLOB SDL_UCLIBC_SOURCES "${SDL3_SOURCE_DIR}/src/libm/*.c")
+ if(TARGET SDL3-shared)
+   # Build uclibc as a static library such that non-used symbols don't end up in the SDL3 shared library.
+@@ -3550,8 +3555,9 @@
+ 
+ sdl_glob_sources(${SDL3_SOURCE_DIR}/src/tray/*.c)
+ 
++# Local Windows SDK: keep real DXGI detection/HDR while excluding the unused GPU backend.
+ if(SDL_GPU)
+-  if(HAVE_DXGI1_6_H)
++  if(HAVE_DXGI1_6_H AND NOT SDL_GPU_VULKAN_ONLY)
+     sdl_glob_sources(
+       "${SDL3_SOURCE_DIR}/src/gpu/d3d12/*.c"
+       "${SDL3_SOURCE_DIR}/src/gpu/d3d12/*.h"
+--- a/src/gpu/SDL_gpu.c
++++ b/src/gpu/SDL_gpu.c
+@@ -648,12 +648,14 @@
+     if (format_flags & SDL_GPU_SHADERFORMAT_SPIRV) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN, true);
+     }
++#ifdef SDL_GPU_D3D12 // Local SDK: absent backends do not publish unused shader properties.
+     if (format_flags & SDL_GPU_SHADERFORMAT_DXBC) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN, true);
+     }
+     if (format_flags & SDL_GPU_SHADERFORMAT_DXIL) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN, true);
+     }
++#endif
+     if (format_flags & SDL_GPU_SHADERFORMAT_MSL) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN, true);
+     }
+--- a/src/render/gpu/SDL_render_gpu.c
++++ b/src/render/gpu/SDL_render_gpu.c
+@@ -1735,10 +1735,12 @@
+         }
+ 
+         // Set hints for the greatest hardware compatibility
++#ifdef SDL_GPU_D3D12 // Local SDK: absent backend has no compatibility property.
+         // This property allows using the renderer on Intel Haswell and Broadwell GPUs.
+         if (!SDL_HasProperty(create_props, SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN)) {
+             SDL_SetBooleanProperty(create_props, SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN, true);
+         }
++#endif
+         // These properties allow using the renderer on more Android devices.
+         if (!SDL_HasProperty(create_props, SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN)) {
+             SDL_SetBooleanProperty(create_props, SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN, false);
+--- a/src/render/gpu/SDL_shaders_gpu.c
++++ b/src/render/gpu/SDL_shaders_gpu.c
+@@ -266,10 +266,12 @@
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN, HAVE_SPIRV_SHADERS);
+         custom_shaders = true;
+     }
++#if HAVE_DXIL60_SHADERS // Local SDK: omit property keys for an absent shader family.
+     if (SDL_GetBooleanProperty(props, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN, false)) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN, HAVE_DXIL60_SHADERS);
+         custom_shaders = true;
+     }
++#endif
+     if (SDL_GetBooleanProperty(props, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN, false)) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN, HAVE_METAL_SHADERS);
+         custom_shaders = true;
+@@ -277,7 +279,9 @@
+     if (!custom_shaders) {
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN, HAVE_PRIVATE_SHADERS);
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN, HAVE_SPIRV_SHADERS);
++#if HAVE_DXIL60_SHADERS
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN, HAVE_DXIL60_SHADERS);
++#endif
+         SDL_SetBooleanProperty(props, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN, HAVE_METAL_SHADERS);
+     }
+ }

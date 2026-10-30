@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/mackron/dr_libs",
+  "commit": "ddf7adb8cde2536a10b89a29babb245592e1ad5d",
+  "files": [
+    {
+      "file": "dr_flac.h",
+      "sha256": "e18c3fbaa5f18a75bbd2cb6e6d1c326b4e50299ac8529b3fb208af595aa81219"
+    },
+    {
+      "file": "LICENSE",
+      "sha256": "dd1c647e6f767f8ff4b2dfae0fed314726600a01e0cf1ef556afddd5fa96ff15"
+    }
+  ]
+}

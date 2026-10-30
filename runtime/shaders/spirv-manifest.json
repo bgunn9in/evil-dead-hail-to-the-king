@@ -1,0 +1,297 @@
+{
+  "format": "EDSPIRV1",
+  "source_sha256": "3cec0c22170e400786f63843a9891b95c0f7760763257743eb571e2e63fc163e",
+  "generated_sha256": "bd639eb4f746578c7790465a1c71ab7926a673a74c966e2ba00c0a30ba5b9596",
+  "compiler": {
+    "version": "1.9.2609",
+    "url": "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.9.2609/dxc_2026_09_29.zip",
+    "archive_sha256": "ad31b1fc8443175d204f77a611fdb3ef2ec42759bdc2f1167368de24a4a7e7f1",
+    "files": {
+      "dxc.exe": "aa7965b3763d9c710baaa5a28cedcc633449962a75d1391d161a85304a41b3e2",
+      "dxcompiler.dll": "0689e2fee0a1c9df8662a59680469f24e2a3ad7ce6bbbcc9284f7a83172bfc59",
+      "dxil.dll": "64be2368211d257a038a7d4ea6bb3e24c878eb8d588c7b8414fccf759b69c2ac"
+    }
+  },
+  "shaders": [
+    {
+      "file": "scene.vert.spv",
+      "sha256": "9c0a7969d34fe94253f8b29832f312dd986e4d9856361a0a18a2fe59dc648b91",
+      "bytes": 1580,
+      "entries": [
+        {
+          "stage": 0,
+          "entry": "VSMain"
+        }
+      ],
+      "inputs": [
+        0,
+        1,
+        2
+      ],
+      "resources": [
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ],
+            [
+              64
+            ]
+          ],
+          "matrix_strides": [
+            16
+          ],
+          "set": 1,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.frag.spv",
+      "sha256": "383a2b4242ae706692790e5ef928a61b2659eacbd5655c9883e17406f6a594fb",
+      "bytes": 1288,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSMain"
+        }
+      ],
+      "inputs": [
+        0,
+        1
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.bgfrag.spv",
+      "sha256": "7e6ffbfbbcd9841415fa19131a5dfad31322a25b5e08cd01545955df0ba4e92b",
+      "bytes": 1128,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSBackground"
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 1
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.hudfrag.spv",
+      "sha256": "ca2f768d77ed106b69472dfae6bceb7b7663f329704e910bd808df409d92383f",
+      "bytes": 1068,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSHud"
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.particlefrag.spv",
+      "sha256": "d255000425d9208dd0226d0d10d9807c07bb1db08784b1b2a253fe469377872c",
+      "bytes": 1372,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSParticle"
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ],
+            [
+              16
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.opaquefrag.spv",
+      "sha256": "e04d0efb1b7f8ef3175ebd2663a95563cb8f9d632fb4fb7066a2b90625453512",
+      "bytes": 1196,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSOpaque"
+        }
+      ],
+      "inputs": [
+        0,
+        1
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.maskfrag.spv",
+      "sha256": "51fb2dddbb817c84e558f9f3e8d2e73179e919ea8cdc0ab733f7cc4b1fccf2bc",
+      "bytes": 1272,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSDCMask"
+        }
+      ],
+      "inputs": [
+        0,
+        2
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 1
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    },
+    {
+      "file": "scene.postfrag.spv",
+      "sha256": "5b42f758207cb4c6e12b18456883c0b96dbdabbd5639d9c575d139e35a9c465e",
+      "bytes": 6792,
+      "entries": [
+        {
+          "stage": 4,
+          "entry": "PSPost"
+        }
+      ],
+      "inputs": [
+        0
+      ],
+      "resources": [
+        {
+          "kind": "combined-image-sampler",
+          "set": 2,
+          "binding": 0
+        },
+        {
+          "kind": "uniform",
+          "offsets": [
+            [
+              0
+            ],
+            [
+              16
+            ],
+            [
+              32
+            ]
+          ],
+          "matrix_strides": [],
+          "set": 3,
+          "binding": 0
+        }
+      ]
+    }
+  ]
+}
